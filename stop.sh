@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# Stop Code Inventory
+# Stop Code Inventory.
 docker-compose down
