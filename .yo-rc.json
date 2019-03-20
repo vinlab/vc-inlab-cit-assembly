@@ -1,0 +1,12 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "vc-inlab-cit-backend",
+      "vc-inlab-cit-frontend"
+    ],
+    "directoryPath": "../",
+    "monitoring": "no",
+    "serviceDiscoveryType": "eureka",
+    "jwtSecretKey": "MTZmOWViMzRmNTJjNjQxMzEzNzU5NDkxNTJjYzcyOWI2YTc3YTViZGY0ZDM3MjY1MjA0MWYzMjA5ZjU0NDRkMDM3M2I0NTM0YjVkNTU1YzZjYTQ2ZTQzZTU2MDNhMTI3MTU4NQ=="
+  }
+}
