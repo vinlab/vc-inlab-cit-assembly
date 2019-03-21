@@ -25,7 +25,16 @@ services:
             - PGPASSWORD=Fog-city-mamba-27
         ports:
             - 5432:5432
-    
+    code_inventory_backend-grafana:
+        image: vinlab/vc-inlab-cit-backend-grafana-image        
+        container_name: 'docker_code_inventory_backend-grafana_1' 
+        volumes:
+            - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
+        user: "104"
+        environment:
+            - GF_PATHS_CONFIG=/etc/grafana/grafana-config.ini
+        ports:
+            - 10110:3000    
     jhipster-registry:
         extends:
             file: jhipster-registry.yml
