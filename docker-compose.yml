@@ -35,8 +35,4 @@ services:
             - GF_PATHS_CONFIG=/etc/grafana/grafana-config.ini
         ports:
             - 10110:3000    
-    jhipster-registry:
-        extends:
-            file: jhipster-registry.yml
-            service: jhipster-registry
             
