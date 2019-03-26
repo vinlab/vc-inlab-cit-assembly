@@ -1,7 +1,7 @@
 version: '2'
 services:
     code_inventory_backend-app:
-        image: vinlab/code-inventory-backend
+        image: vinlab/code-inventory-backend:${TAG}
         environment:
             - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
@@ -16,7 +16,7 @@ services:
             - ~/.veracode/code-inventory/jobs:/var/jobs
             - ~/.veracode/code-inventory/code:/var/code
     code_inventory_backend-postgresql:
-        image: vinlab/vc-inlab-cit-backend-postgres-image
+        image: vinlab/vc-inlab-cit-backend-postgres-image:${TAG}
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         environment:
@@ -26,7 +26,7 @@ services:
         ports:
             - 5432:5432
     code_inventory_backend-grafana:
-        image: vinlab/vc-inlab-cit-backend-grafana-image        
+        image: vinlab/vc-inlab-cit-backend-grafana-image:${TAG}
         container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
             - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
@@ -34,5 +34,5 @@ services:
         environment:
             - GF_PATHS_CONFIG=/etc/grafana/grafana-config.ini
         ports:
-            - 10110:3000    
+            - 10110:3000
             
