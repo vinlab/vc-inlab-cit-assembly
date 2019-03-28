@@ -5,8 +5,6 @@ services:
         environment:
             - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
-            - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
             - 'SPRING_DATASOURCE_URL=jdbc:postgresql://code_inventory_backend-postgresql:5432/code_inventory_backend'
             - JHIPSTER_SLEEP=0
             - JHIPSTER_REGISTRY_PASSWORD=admin
@@ -16,7 +14,7 @@ services:
             - ~/.veracode/code-inventory/jobs:/var/jobs
             - ~/.veracode/code-inventory/code:/var/code
     code_inventory_backend-postgresql:
-        image: vinlab/vc-inlab-cit-backend-postgres-image:${TAG}
+        image: vinlab/vc-inlab-cit-postgres:1.0.0
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         environment:
@@ -26,7 +24,7 @@ services:
         ports:
             - 5432:5432
     code_inventory_backend-grafana:
-        image: vinlab/vc-inlab-cit-backend-grafana-image:${TAG}
+        image: vinlab/vc-inlab-cit-grafana:1.0.0
         container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
             - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
