@@ -14,6 +14,10 @@ require_docker() {
 	fi
 }
 
-common_init(){
+startup_sequence(){
 	require_docker;
+	
+}
+common_init(){
+	startup_sequence;
 }
