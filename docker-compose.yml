@@ -14,7 +14,7 @@ services:
             - ~/.veracode/code-inventory/jobs:/var/jobs
             - ~/.veracode/code-inventory/code:/var/code
     code_inventory_backend-postgresql:
-        image: vinlab/vc-inlab-cit-postgres:1.0.0
+        image: vinlab/vc-inlab-cit-postgres:${POSTGRES_TAG}
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         environment:
@@ -24,7 +24,7 @@ services:
         ports:
             - 5432:5432
     code_inventory_backend-grafana:
-        image: vinlab/vc-inlab-cit-grafana:1.0.0
+        image: vinlab/vc-inlab-cit-grafana:${GRAFANA_TAG}
         container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
             - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
