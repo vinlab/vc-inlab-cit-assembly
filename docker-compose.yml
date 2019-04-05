@@ -7,7 +7,6 @@ services:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - 'SPRING_DATASOURCE_URL=jdbc:postgresql://code_inventory_backend-postgresql:5432/code_inventory_backend'
             - JHIPSTER_SLEEP=0
-            - JHIPSTER_REGISTRY_PASSWORD=admin
         ports:
             - 10101:10101
         volumes:
@@ -18,8 +17,8 @@ services:
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         environment:
-            - POSTGRES_PASSWORD=Smart-bananas-silly-nuts-57
             - POSTGRES_DB=code_inventory_backend
+            - POSTGRES_PASSWORD=Smart-bananas-silly-nuts-57
             - PGPASSWORD=Fog-city-mamba-27
         ports:
             - 5432:5432
