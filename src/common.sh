@@ -62,7 +62,7 @@ require_docker_secrets(){
 		echo 'Missing docker secret: code-inventory-db-postgres-password' >&2
 		result=false
 	fi
-	if ! docker_secret_	exists 'code-inventory-db-grafana-password'; then
+	if ! docker_secret_exists 'code-inventory-db-grafana-password'; then
 		echo 'CHECKING DOCKER SECRETS>' >&2
 		echo 'Missing docker secret: code-inventory-db-grafana-password' >&2
 		result=false
