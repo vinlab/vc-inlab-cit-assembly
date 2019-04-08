@@ -2,6 +2,9 @@ version: '3.7'
 services:
     code_inventory_backend-app:
         image: vinlab/code-inventory-backend:${TAG}
+        volumes:
+            - ~/.veracode/code-inventory/jobs:/var/jobs
+            - ~/.veracode/code-inventory/code:/var/code
         environment:
             - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
@@ -9,9 +12,8 @@ services:
             - JHIPSTER_SLEEP=0
         ports:
             - 10101:10101
-        volumes:
-            - ~/.veracode/code-inventory/jobs:/var/jobs
-            - ~/.veracode/code-inventory/code:/var/code
+        secrets:
+            - code-inventory-master-password
     code_inventory_backend-postgresql:
         image: vinlab/vc-inlab-cit-postgres:${POSTGRES_TAG}
         volumes:
@@ -22,9 +24,13 @@ services:
             - PGPASSWORD=Fog-city-mamba-27
         ports:
             - 5432:5432
+        secrets:
+            - code-inventory-db-backend-password
+            - code-inventory-db-postgres-password            
     code_inventory_backend-grafana:
         image: vinlab/vc-inlab-cit-grafana:${GRAFANA_TAG}
-        container_name: 'docker_code_inventory_backend-grafana_1' 
+        # 'container_name' directive not supported by docker stack/docker deploy
+        #container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
             - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
         user: "104"
@@ -32,4 +38,16 @@ services:
             - GF_PATHS_CONFIG=/etc/grafana/grafana-config.ini
         ports:
             - 10110:3000
-            
+        secrets:
+            - code-inventory-db-grafana-password
+secrets:
+    code-inventory-master-password:
+        external: true
+    code-inventory-db-backend-password:
+        external: true
+    code-inventory-db-postgres-password:
+        external: true
+    code-inventory-db-grafana-password:
+        external: true
+        
+    
