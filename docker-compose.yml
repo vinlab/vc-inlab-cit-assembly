@@ -1,7 +1,7 @@
 version: '3.7'
 services:
     code_inventory_backend-app:
-        image: vinlab/code-inventory-backend:${TAG}
+        image: vinlab/code-inventory-backend:latest
         volumes:
             - ~/.veracode/code-inventory/jobs:/var/jobs
             - ~/.veracode/code-inventory/code:/var/code
@@ -10,25 +10,30 @@ services:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - 'SPRING_DATASOURCE_URL=jdbc:postgresql://code_inventory_backend-postgresql:5432/code_inventory_backend'
             - JHIPSTER_SLEEP=0
+# AP 040919 Use custom password for DB connection
+#            - SPRING_DATASOURCE_PASSWORD=Smart-bananas-silly-nuts-57
         ports:
             - 10101:10101
         secrets:
             - code-inventory-master-password
+            - code-inventory-db-backend-password
     code_inventory_backend-postgresql:
-        image: vinlab/vc-inlab-cit-postgres:${POSTGRES_TAG}
+        image: vinlab/vc-inlab-cit-postgres:1.0.0
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         environment:
             - POSTGRES_DB=code_inventory_backend
-            - POSTGRES_PASSWORD=Smart-bananas-silly-nuts-57
-            - PGPASSWORD=Fog-city-mamba-27
+# AP 040819 Replace explicit values with docker secrets
+#            - POSTGRES_PASSWORD=Smart-bananas-silly-nuts-57
+#            - PGPASSWORD=Fog-city-mamba-27
+#            - POSTGRES_PASSWORD_FILE=run/secrets/code-inventory-db-backend-password            
+#            - PGPASSWORD_FILE=run/secrets/code-inventory-db-postgres-password
         ports:
             - 5432:5432
         secrets:
-            - code-inventory-db-backend-password
             - code-inventory-db-postgres-password            
     code_inventory_backend-grafana:
-        image: vinlab/vc-inlab-cit-grafana:${GRAFANA_TAG}
+        image: vinlab/vc-inlab-cit-grafana:1.0.0
         # 'container_name' directive not supported by docker stack/docker deploy
         #container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
