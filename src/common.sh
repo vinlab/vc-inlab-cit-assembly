@@ -1,3 +1,5 @@
+#!/bin/sh
+
 command_exist() {
 	type "$@" &> /dev/null
 }
@@ -7,7 +9,7 @@ require_docker() {
       echo 'CHECKING IF DOCKER COMMAND IS AVAILABLE>' >&2
 	  echo 'Docker command not found, you need to install Docker first. Exiting.' >&2
 	  exit 1
-	fi	
+	fi
 	if ! command_exist docker-compose; then
       echo 'CHECKING IF DOCKER COMPOSE COMMAND IS AVAILABLE>' >&2
 	  echo 'Docker-compose command not found, exiting.' >&2
@@ -73,11 +75,35 @@ require_docker_secrets(){
 	fi
 }
 
+docker_container_exists(){
+  # We do not use -w flag, to allow for checking by container infix
+  # Example: docker_container_exists 'code_inventory_backend-'
+  # will return true for both 'docker_code_inventory_backend-app_1'
+  # as well as for 'code-inventory_code_inventory_backend-app.1.loe6skwa6i60jnqi4ja75723h'
+  # (last name is specific to docker stack runs)
+	docker container ls | grep --silent "$1"
+}
+
+require_app_not_running() {
+  docker_container_exists 'code_inventory_backend-'
+  # TODO: check if CIT is already running, prompt to stop
+  if docker_container_exists 'code_inventory_backend-'; then
+      echo 'CHECKING IF APPLICATION IS CURRENTLY RUNNING>' >&2
+	  echo 'Code Inventory is currently running, cannot proceed.' >&2
+	  exit 1
+	fi
+}
+
+get_container_full_name(){
+  docker container ls | grep "$1" | awk '{print $NF}'
+}
+
 startup_sequence(){
 	require_docker
 	require_docker_swarm
 	require_master_password
 	require_docker_secrets
+  require_app_not_running
 }
 
 common_init(){

@@ -10,8 +10,6 @@ services:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - 'SPRING_DATASOURCE_URL=jdbc:postgresql://code_inventory_backend-postgresql:5432/code_inventory_backend'
             - JHIPSTER_SLEEP=0
-# AP 040919 Use custom password for DB connection
-#            - SPRING_DATASOURCE_PASSWORD=Smart-bananas-silly-nuts-57
         ports:
             - 10101:10101
         secrets:
@@ -21,20 +19,11 @@ services:
         image: vinlab/vc-inlab-cit-postgres:1.0.0
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
-        environment:
-            - POSTGRES_DB=code_inventory_backend
-# AP 040819 Replace explicit values with docker secrets
-#            - POSTGRES_PASSWORD=Smart-bananas-silly-nuts-57
-#            - PGPASSWORD=Fog-city-mamba-27
-#            - POSTGRES_PASSWORD_FILE=run/secrets/code-inventory-db-backend-password            
-#            - PGPASSWORD_FILE=run/secrets/code-inventory-db-postgres-password
         ports:
             - 5432:5432
-        secrets:
-            - code-inventory-db-postgres-password            
     code_inventory_backend-grafana:
-        image: vinlab/vc-inlab-cit-grafana:1.0.0
-        # 'container_name' directive not supported by docker stack/docker deploy
+        image: vinlab/vc-inlab-cit-grafana:1.0.1
+        # 'container_name' is not supported by docker stack deploy
         #container_name: 'docker_code_inventory_backend-grafana_1' 
         volumes:
             - ~/.veracode/code-inventory/grafana/data:/var/lib/grafana
