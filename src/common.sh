@@ -77,7 +77,7 @@ require_docker_secrets(){
 
 docker_container_exists(){
   # We do not use -w flag, to allow for checking by container infix
-  # Example: docker_container_exists 'code_inventory_backend-'
+  # Example: docker_container_exists 'code_inventory_backend-app'
   # will return true for both 'docker_code_inventory_backend-app_1'
   # as well as for 'code-inventory_code_inventory_backend-app.1.loe6skwa6i60jnqi4ja75723h'
   # (last name is specific to docker stack runs)
@@ -85,11 +85,9 @@ docker_container_exists(){
 }
 
 require_app_not_running() {
-  docker_container_exists 'code_inventory_backend-'
-  # TODO: check if CIT is already running, prompt to stop
-  if docker_container_exists 'code_inventory_backend-'; then
+  if docker_container_exists 'code_inventory_backend-app'; then
       echo 'CHECKING IF APPLICATION IS CURRENTLY RUNNING>' >&2
-	  echo 'Code Inventory is currently running, cannot proceed.' >&2
+	  echo 'Code Inventory is already running.' >&2
 	  exit 1
 	fi
 }

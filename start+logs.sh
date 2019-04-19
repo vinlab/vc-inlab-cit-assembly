@@ -9,9 +9,6 @@ source src/common.sh
 common_init
 #docker-compose up
 docker stack up -c docker-compose.yml code-inventory
-# tail logs
 sleep 6
-container_name=$(get_container_full_name 'code_inventory_backend-app')
-echo "Backend app container: ${container_name}"
-docker logs -f "${container_name}"
+docker logs -f "$(get_container_full_name 'code_inventory_backend-app')"
 cd ${FROM_DIR} || exit 1
