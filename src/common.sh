@@ -98,6 +98,10 @@ get_container_full_name() {
   docker container ls | grep "$1" | awk '{print $NF}'
 }
 
+get_container_full_name1() {
+  docker container ls | grep "$1" | awk '{print $NF}'
+}
+
 docker_image_exists() {
   # We do not use -w flag, to allow for checking by container infix
   # Example: docker_image_exists 'code_inventory_backend'
@@ -134,4 +138,21 @@ startup_sequence() {
 
 common_init() {
   startup_sequence
+}
+
+wait_for_docker_stack_to_start(){
+  lib/docker-stack-wait/docker-stack-wait.sh -t 10 code-inventory
+}
+
+verify_app_containers_exist() {
+  app_container=$(get_container_full_name 'code_inventory_backend-app')
+  if [ -z "${app_container}" ]; then
+    echo 'VERIFYING APPLICATION IS RUNNING>' >&2
+    echo "Error: Not found: application's backend container" >&2
+    # Show any errors from service startup - they will not be shown in container logs,
+    # since the container was not created yet (issue 176)
+    echo "Checking application's backend service processes. Please make note of any errors:" >&2
+    docker service ps --no-trunc 'code-inventory_code_inventory_backend-app'
+    exit 1
+  fi
 }

@@ -5,10 +5,12 @@
 # Code Inventory application containers separately.
 # Starts Postgres and Grafana containers only.
 # Use ./stop.sh to stop it.
-FROM_DIR=`pwd`
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd ${DIR} || exit 1
+from_dir=`pwd`
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd ${dir} || exit 1
 source src/common.sh
 common_init
 docker stack up -c infra.compose.yml code-inventory
-cd ${FROM_DIR} || exit 1
+wait_for_docker_stack_to_start
+docker logs -f "$(get_container_full_name 'code_inventory_backend-postgres')"
+cd ${from_dir} || exit 1
