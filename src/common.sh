@@ -127,6 +127,26 @@ require_app_docker_images() {
 #  && require_app_docker_image ${FRONTEND_DOCKER_IMAGE}
 }
 
+create_dir_if_missing() {
+	if ! [ -d "$2" ]; then
+    echo 'CHECKING FOR MISSING DIRS>' >&2
+		echo "Missing $1 dir, creating"
+		mkdir -p "$2"
+	fi
+}
+
+create_any_missing_dirs() {
+  if ! create_dir_if_missing "postgres data" "${postgres_dir}" \
+  || ! create_dir_if_missing "code" "${code_dir}" \
+  || ! create_dir_if_missing "jobs" "${jobs_dir}" \
+  || ! create_dir_if_missing "grafana" "${grafana_dir}" \
+  || ! create_dir_if_missing "grafana data" "${grafana_dir}/data"
+  then
+    echo "${APP} INSTALLATION HAS FAILED"
+    exit 1
+  fi
+}
+
 startup_sequence() {
   require_docker
   require_docker_swarm
@@ -134,6 +154,7 @@ startup_sequence() {
   require_docker_secrets
   require_app_docker_images
   require_app_not_running
+  create_any_missing_dirs
 }
 
 common_init() {
@@ -144,15 +165,26 @@ wait_for_docker_stack_to_start(){
   lib/docker-stack-wait/docker-stack-wait.sh -t 10 code-inventory
 }
 
-verify_app_containers_exist() {
-  app_container=$(get_container_full_name 'code_inventory_backend-app')
+verify_app_container_exist() {
+  app_container=$(get_container_full_name $2)
   if [ -z "${app_container}" ]; then
     echo 'VERIFYING APPLICATION IS RUNNING>' >&2
-    echo "Error: Not found: application's backend container" >&2
+    echo "Error: Not found: application's $1 container: $2" >&2
     # Show any errors from service startup - they will not be shown in container logs,
     # since the container was not created yet (issue 176)
-    echo "Checking application's backend service processes. Please make note of any errors:" >&2
-    docker service ps --no-trunc 'code-inventory_code_inventory_backend-app'
+    echo "Checking application's $1 service processes. Please make note of any errors:" >&2
+    docker service ps --no-trunc "$3"
+    false
+  else
+    true
+  fi
+}
+
+verfiy_app_containers_exist() {
+  if ! verify_app_container_exist 'backend' 'code_inventory_backend-app' 'code-inventory_code_inventory_backend-app' \
+  || ! verify_app_container_exist 'postgres' 'code_inventory_backend-postgresql' 'code-inventory_code_inventory_backend-postgresql' \
+  || ! verify_app_container_exist 'backend' 'code_inventory_backend-grafana' 'code-inventory_code_inventory_backend-grafana'
+  then
     exit 1
   fi
 }
