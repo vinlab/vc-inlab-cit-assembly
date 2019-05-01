@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+    code_inventory_assembly:
+        build:
+            context: .
+        image: vinlab/vc-inlab-cit-assembly
+        volumes:
+            - ~/.veracode/code-inventory/bin:/var/bin
+            - ~/.veracode/code-inventory/data/postgresql:/var/postgresql
+            - ~/.veracode/code-inventory/grafana/data:/var/grafana
+            - ~/.veracode/code-inventory/code:/var/code
+            - ~/.veracode/code-inventory/jobs:/var/jobs

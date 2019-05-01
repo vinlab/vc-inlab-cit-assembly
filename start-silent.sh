@@ -9,5 +9,5 @@ source src/common.sh
 common_init
 docker stack up -c app.compose.yml code-inventory
 wait_for_docker_stack_to_start
-verify_app_containers_exist
+verfiy_app_containers_exist
 cd ${from_dir} || exit 1
