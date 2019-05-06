@@ -1,4 +1,11 @@
 #!/bin/sh
+#
+# Code Inventory Assembly
+#
+# Implements logic for use in Code Inventory start/stop scripts.
+#
+# Author: Andrey Potekhin
+#
 
 source src/constants.sh
 
@@ -153,12 +160,16 @@ startup_sequence() {
   require_master_password
   require_docker_secrets
   require_app_docker_images
-  require_app_not_running
-  create_any_missing_dirs
 }
 
 common_init() {
   startup_sequence
+}
+
+common_start_script_init() {
+  common_init
+  require_app_not_running
+  create_any_missing_dirs
 }
 
 wait_for_docker_stack_to_start(){

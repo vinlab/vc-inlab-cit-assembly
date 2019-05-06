@@ -8,11 +8,9 @@ Stop Code Inventory, when started as daemon: `./stop.sh`
 
 ### Verification/Troubleshooting
 
-Follow Code Inventory logs, when it has been started as daemon: 
-* Backend: `docker logs -f docker_code_inventory_backend-app_1`
-* Database: `docker logs -f docker_code_inventory_backend-postgresql_1`
-* Grafana: `docker logs -f docker_code_inventory-grafana_1`
+Follow Code Inventory logs: 
+* Backend: `./logs.backend.sh`
+* Frontend: `./logs.frontend.sh`
+* Database: `./logs.postgres.sh`
+* Grafana: `./logs.grafana.sh`
 
--or-
-
-Run Code Inventory as non-daemon and see all logs: `./start+logs.sh`
