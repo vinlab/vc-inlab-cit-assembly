@@ -9,6 +9,47 @@
 
 source src/constants.sh
 
+prompt() {
+  echo "$1"
+  if [ -n "$2" ]; then
+    read -p "$2" -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+    fi
+  fi
+}
+
+prompt_yN() {
+  if [ -n "$2" ]; then
+    echo "$1"
+    read -p "$2" -n 1 -r
+  else
+    read -p "$1" -n 1 -r
+  fi
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    true
+    return
+  fi
+  false
+}
+
+prompt_Yn() {
+  if [ -n "$2" ]; then
+    echo "$1"
+    read -p "$2" -n 1 -r
+  else
+    read -p "$1" -n 1 -r
+  fi
+  echo
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    false
+    return
+  fi
+  true
+}
+
 command_exist() {
   type "$@" &> /dev/null
 }
@@ -130,8 +171,8 @@ require_app_docker_image() {
 require_app_docker_images() {
   require_app_docker_image ${BACKEND_DOCKER_IMAGE} \
   && require_app_docker_image ${POSTGRES_DOCKER_IMAGE} \
-  && require_app_docker_image ${GRAFANA_DOCKER_IMAGE}
-#  && require_app_docker_image ${FRONTEND_DOCKER_IMAGE}
+  && require_app_docker_image ${GRAFANA_DOCKER_IMAGE} \
+  && require_app_docker_image ${FRONTEND_DOCKER_IMAGE}
 }
 
 create_dir_if_missing() {

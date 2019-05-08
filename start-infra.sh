@@ -9,8 +9,25 @@ from_dir=`pwd`
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${dir} || exit 1
 source src/common.sh
+
+startup_prompt() {
+  if ! prompt_Yn "
+    This will start ${App} dependency services - database, grafana - without starting ${App} application itself." "
+    Proceed? (Y/n) "; then
+    exit 0
+  fi
+}
+
 common_start_script_init
+startup_prompt
+echo "STARTING ${APP} INFRASTRUCTURE>"
 docker stack up -c infra.compose.yml code-inventory
 wait_for_docker_stack_to_start
-docker logs -f "$(get_container_full_name 'code_inventory_backend-postgres')"
+#echo
+#echo "GRAFANA LOGS:"
+#docker logs --tail all "$(get_container_full_name 'code_inventory_backend-grafana')"
+#echo
+echo "POSTGRES LOGS:"
+docker logs --tail all "$(get_container_full_name 'code_inventory_backend-postgres')"
+echo "STARTING ${APP} INFRASTRUCTURE>DONE"
 cd ${from_dir} || exit 1
