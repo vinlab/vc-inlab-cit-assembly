@@ -11,5 +11,5 @@ echo "STARTING ${APP}>"
 docker stack up -c app.compose.yml --prune code-inventory
 wait_for_docker_stack_to_start
 verfiy_app_containers_exist
-docker logs -f "$(get_container_full_name 'code_inventory_backend-app')" | grep --invert-match -E 'TRACE|DEBUG|INFO'
+docker logs -f "$(get_container_full_name 'code_inventory_backend-app')" | grep --invert-match -E 'TRACE|DEBUG'
 cd ${from_dir} || exit 1
