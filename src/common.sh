@@ -195,6 +195,17 @@ create_any_missing_dirs() {
   fi
 }
 
+start_infrastructure(){
+  # Start Postgres and Grafana before starting the app,
+  # wait for them to fully start, to prevent connectivity
+  # issues on Code Inventory startup.
+  echo "INITIALIZING ${APP} INFRASTRUCTURE>"
+  docker stack up -c infra.compose.yml code-inventory
+  wait_for_docker_stack_to_start
+  echo "INITIALIZING ${APP} INFRASTRUCTURE>DONE"
+}
+
+
 startup_sequence() {
   require_docker
   require_docker_swarm
@@ -211,6 +222,7 @@ common_start_script_init() {
   common_init
   require_app_not_running
   create_any_missing_dirs
+  start_infrastructure
 }
 
 wait_for_docker_stack_to_start(){

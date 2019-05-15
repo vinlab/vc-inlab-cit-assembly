@@ -19,14 +19,11 @@ startup_prompt() {
 }
 
 common_start_script_init
-startup_prompt
-echo "STARTING ${APP} INFRASTRUCTURE>"
+# Script is called from Code Inventory Installer, where this prompt creates confusion
+#startup_prompt
+echo "STARTING ${APP} APPLICATION>"
 docker stack up -c infra.compose.yml code-inventory
 wait_for_docker_stack_to_start
-#echo
-#echo "GRAFANA LOGS:"
-#docker logs --tail all "$(get_container_full_name 'code_inventory_backend-grafana')"
-#echo
 echo "POSTGRES LOGS:"
 docker logs --tail all "$(get_container_full_name 'code_inventory_backend-postgres')"
 echo "STARTING ${APP} INFRASTRUCTURE>DONE"
