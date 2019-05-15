@@ -214,7 +214,7 @@ common_start_script_init() {
 }
 
 wait_for_docker_stack_to_start(){
-  lib/docker-stack-wait/docker-stack-wait.sh -t 10 code-inventory
+  lib/docker-stack-wait/docker-stack-wait.sh -t 20 code-inventory
 }
 
 verify_app_container_exist() {

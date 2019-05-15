@@ -11,4 +11,5 @@ echo "STARTING ${APP}>"
 docker stack up -c app.compose.yml code-inventory
 wait_for_docker_stack_to_start
 verfiy_app_containers_exist
+echo "STARTING ${APP}>DONE"
 cd ${from_dir} || exit 1
