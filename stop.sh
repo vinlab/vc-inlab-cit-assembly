@@ -17,5 +17,9 @@ for i in {0..5}; do
   fi
   echo "Waiting..."
 done
+if docker_network_exists "code-inventory"; then
+  echo "FAILED TO STOP ${APP}"
+  exit 1
+fi
 echo "STOPPING ${APP}>DONE"
 cd ${from_dir} || exit 1
