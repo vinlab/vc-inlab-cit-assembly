@@ -146,16 +146,16 @@ get_container_full_name() {
   docker container ls | grep "$1" | awk '{print $NF}'
 }
 
-get_container_full_name1() {
-  docker container ls | grep "$1" | awk '{print $NF}'
-}
-
 docker_image_exists() {
   # We do not use -w flag, to allow for checking by container infix
   # Example: docker_image_exists 'code_inventory_backend'
   # will return true for both 'vinlab/code_inventory_backend:latest'
   # as well as for 'vinlab/code_inventory_backend:1.0.1'
   docker image ls  --format '{{.Repository}}:{{.Tag}}' | grep --silent "$1"
+}
+
+docker_network_exists() {
+  docker network ls  --format '{{.Name}}' | grep --silent "$1"
 }
 
 require_app_docker_image() {
