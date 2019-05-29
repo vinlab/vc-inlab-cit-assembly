@@ -13,7 +13,7 @@ services:
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         ports:
-            - 5432:5432
+            - 10111:5432
     code_inventory_backend-grafana:
         image: vinlab/vc-inlab-cit-grafana:1.0.1
         volumes:
@@ -36,5 +36,3 @@ secrets:
         external: true
     code-inventory-mail-config:
         external: true
-
-    
