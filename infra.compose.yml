@@ -5,7 +5,7 @@ services:
         volumes:
             - '~/.veracode/code-inventory/data/postgresql/:/var/lib/postgresql/data/'
         ports:
-            - 10111:5432
+            - 10111:10111
     code_inventory_backend-grafana:
         image: vinlab/vc-inlab-cit-grafana:1.0.1
         # 'container_name' is not supported by docker stack deploy
