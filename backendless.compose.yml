@@ -8,22 +8,6 @@ services:
             - JHIPSTER_SLEEP=0
         ports:
             - 10100:8080
-    code_inventory_backend-app:
-        image: vinlab/code-inventory-backend:latest
-        volumes:
-            - ~/.veracode/code-inventory/jobs:/var/jobs
-            - ~/.veracode/code-inventory/code:/var/code
-        environment:
-            - _JAVA_OPTIONS=-Xmx512m -Xms256m
-            - SPRING_PROFILES_ACTIVE=prod,swagger
-            - 'SPRING_DATASOURCE_URL=jdbc:postgresql://code_inventory_backend-postgresql:5432/code_inventory_backend'
-            - JHIPSTER_SLEEP=0
-        ports:
-            - 10101:10101
-        secrets:
-            - code-inventory-master-password
-            - code-inventory-db-backend-password
-            - code-inventory-mail-config
     code_inventory_backend-postgresql:
         image: vinlab/vc-inlab-cit-postgres:1.0.0
         volumes:
